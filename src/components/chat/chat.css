@@ -55,6 +55,59 @@
     }
   }
   .center {
+    flex: 1;
+    padding: 20px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .message {
+      max-width: 70%;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      align-self: flex-start;
+
+      &.own {
+        align-self: flex-end;
+
+        .texts {
+          p {
+            background-color: #5183fe;
+          }
+        }
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .texts {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        img {
+          width: 100%;
+          height: 300px;
+          border-radius: 10px;
+          object-fit: cover;
+        }
+
+        p {
+          padding: 20px;
+          background-color: rgba(17, 25, 40, 0.3);
+          border-radius: 10px;
+        }
+
+        span {
+          font-size: 13px;
+        }
+      }
+    }
   }
 
   .bottom {
@@ -86,6 +139,16 @@
       padding: 20px;
       border-radius: 10px;
       font-size: 16px;
+    }
+
+    .emoji {
+      position: relative;
+
+      .picker {
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+      }
     }
 
     .sendButton {
