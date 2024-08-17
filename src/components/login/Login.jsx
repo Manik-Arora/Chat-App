@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./login.css";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [avatar, setAvatar] = useState({
@@ -16,6 +17,11 @@ const Login = () => {
     }
   };
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    toast.success("fander!!!");
+  };
+
   return (
     <div className="login">
       <div className="item">
@@ -29,7 +35,7 @@ const Login = () => {
       <div className="separator"></div>
       <div className="item">
         <h2>Create an account</h2>
-        <form action="">
+        <form onSubmit={handleLogin}>
           <label htmlFor="file">
             <img src={avatar.url || "./bg.jpg"} alt="" />
             Upload an Image
