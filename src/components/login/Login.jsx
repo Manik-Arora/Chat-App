@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "./login.css";
 import { toast } from "react-toastify";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const Login = () => {
   const [avatar, setAvatar] = useState({
@@ -22,20 +25,48 @@ const Login = () => {
     toast.success("fander!!!");
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const { username, email, password } = Object.fromEntries(formData);
+
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+
+      await setDoc(doc(db, "users", res.user.uid), {
+        username,
+        email,
+        id: res.user.uid,
+        blocked: [],
+      });
+
+      await setDoc(doc(db, "userchats", res.user.uid), {
+        chats: [],
+      });
+
+      toast.success("Account created, You can login now!");
+    } catch (err) {
+      console.log(err);
+      toast.error(err);
+    }
+  };
+
   return (
     <div className="login">
       <div className="item">
         <h2>Welcome back!</h2>
-        <form action="">
+        <form onSubmit={handleLogin}>
           <input type="text" placeholder="Email" name="email" />
-          <input type="password" name="Password" id="password" />
+          <input type="password" name="Password" placeholder="Password" />
           <button>Sign In</button>
         </form>
       </div>
       <div className="separator"></div>
       <div className="item">
         <h2>Create an account</h2>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleRegister}>
           <label htmlFor="file">
             <img src={avatar.url || "./bg.jpg"} alt="" />
             Upload an Image
@@ -48,7 +79,7 @@ const Login = () => {
           />
           <input type="username" placeholder="Username" name="username" />
           <input type="text" placeholder="Email" name="email" />
-          <input type="password" name="Password" id="password" />
+          <input type="password" name="password" placeholder="Password" />
           <button>Sign Up</button>
         </form>
       </div>
