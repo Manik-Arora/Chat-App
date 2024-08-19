@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import List from "./components/list/List";
 import Chat from "./components/chat/Chat";
 import Detail from "./components/detail/Detail";
 import Notification from "./components/notification/Notification";
 import Login from "./components/login/Login";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./lib/firebase";
 
 function App() {
   const user = false;
+
+  useEffect(() => {
+    const unSub = onAuthStateChanged(auth, (user) => {
+      console.log(user);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
 
   return (
     <div className="container">
